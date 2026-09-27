@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SUBJECTS } from '../lib/model';
+---
+
+<Layout title="ร่วมเป็นติวเตอร์กับเรา | TutorMatch">
+  <main class="mx-auto max-w-2xl px-6 py-14">
+    <header class="mb-8">
+      <p class="eyebrow mb-3">สมัครเป็นติวเตอร์</p>
+      <h1 class="text-4xl font-bold">สอนในแบบของคุณ ในเวลาที่คุณเลือก</h1>
+      <p class="muted mt-3">กรอกข้อมูลเบื้องต้นและคอร์สแรกของคุณ แล้วตั้งค่าตารางสอนและคอร์สอื่นๆ ต่อได้ในแดชบอร์ด</p>
+    </header>
+
+    <form id="registerForm" class="card">
+      <div class="field"><label for="name">ชื่อ-นามสกุล (ที่ใช้แสดงในการสอน)</label><input id="name" name="name" required placeholder="เช่น ดร. อนิรุทธ์ วงศ์ดี" /></div>
+      <div class="field"><label for="bio">แนะนำตัวสั้นๆ</label><textarea id="bio" name="bio" rows="3" required placeholder="ประสบการณ์ สไตล์การสอน หรือผลงานที่โดดเด่น"></textarea></div>
+
+      <h2 class="mt-2 border-t border-line pt-6">คอร์สแรกของคุณ</h2>
+      <div class="grid gap-5 sm:grid-cols-[1fr_12rem]">
+        <div class="field"><label for="title">ชื่อคอร์ส</label><input id="title" name="title" required placeholder="เช่น แคลคูลัส 1" /></div>
+        <div class="field"><label for="subject">หมวดวิชา</label><select id="subject" name="subject">{SUBJECTS.map((s) => <option>{s}</option>)}</select></div>
+      </div>
+      <div class="field"><label for="rate">ค่าเรียน (บาท/ชั่วโมง)</label><input id="rate" name="rate" type="number" min="0" step="1" required placeholder="400" class="sm:max-w-48" /></div>
+      <div class="field"><label for="description">คำอธิบายคอร์ส</label><textarea id="description" name="description" rows="3" required placeholder="ขอบเขตเนื้อหาและเป้าหมายของคอร์ส"></textarea></div>
+      <button type="submit" class="btn-primary mt-2 self-start px-6">สมัครและเปิดแดชบอร์ด</button>
+    </form>
+  </main>
+</Layout>
+
+<script>
+  import { api, session } from '../lib/api';
+  import { $, fail, notify } from '../lib/ui';
+
+  const form = $<HTMLFormElement>('registerForm');
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    const { name, bio, ...course } = Object.fromEntries(new FormData(form));
+    try {
+      const { id } = await api('/tutors', 'POST', { name, bio, course });
+      session.set('tutor', id);
+      await notify(`ยินดีต้อนรับคุณ ${name} แดชบอร์ดตารางสอนและรายวิชาของคุณพร้อมใช้งานแล้ว`, 'สมัครสมาชิกสำเร็จ');
+      location.href = '/tutor/dashboard';
+    } catch (err) {
+      fail(err);
+    }
+  };
+</script>

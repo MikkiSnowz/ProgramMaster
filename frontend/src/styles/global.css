@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+/* Warm paper + ink palette with a single green accent. Use these tokens instead of raw palette colours. */
+@theme {
+  --font-sans: "IBM Plex Sans Thai", system-ui, sans-serif;
+  --font-display: "Noto Serif Thai", Georgia, serif;
+  --color-paper: #f7f5f0;
+  --color-surface: #ffffff;
+  --color-ink: #1f1d1a;
+  --color-muted: #6f6a62;
+  --color-line: #e4dfd5;
+  --color-accent: #1f5c46;
+  --color-accent-soft: #e7f0eb;
+  --color-warn: #a15c07;
+  --color-warn-soft: #fbf1e1;
+  --color-danger: #b42318;
+  --color-danger-soft: #fdecea;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-semibold transition disabled:opacity-40;
+}
+
+@utility pill {
+  @apply inline-block rounded-full border border-line px-2.5 py-0.5 text-xs font-medium whitespace-nowrap text-muted;
+}
+
+@layer base {
+  body { @apply min-h-screen bg-paper font-sans text-ink antialiased; }
+  h1, h2, h3 { @apply font-display; }
+  label, legend { @apply text-sm font-medium text-ink/80; }
+  input:not([type="checkbox"]), textarea, select:not(.bare) {
+    @apply w-full rounded-md border border-line bg-surface px-3 py-2.5 text-ink outline-none placeholder:text-muted/60 focus:border-accent focus:ring-2 focus:ring-accent/15 disabled:opacity-50;
+  }
+  select.bare { @apply cursor-pointer rounded-md bg-transparent px-3 py-2 text-sm font-medium text-ink outline-none hover:bg-paper; }
+  button:not(:disabled) { @apply cursor-pointer; }
+  a { @apply transition; }
+}
+
+@layer components {
+  .card { @apply flex flex-col gap-5 rounded-xl border border-line bg-surface p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] md:p-8; }
+  .card h2 { @apply text-xl font-semibold; }
+  .row { @apply flex items-center justify-between gap-6 rounded-lg border border-line bg-paper/60 px-5 py-4; }
+  .field { @apply flex flex-col gap-1.5; }
+  .muted { @apply text-muted; }
+  .eyebrow { @apply text-sm font-semibold text-accent; } /* no letter-spacing: it breaks Thai glyph clusters */
+
+  .btn-primary { @apply btn bg-accent text-white hover:bg-accent/90; }
+  .btn-muted { @apply btn border border-line bg-surface text-ink hover:bg-paper; }
+  .btn-danger { @apply btn bg-danger text-white hover:bg-danger/90; }
+  .link { @apply font-medium text-accent underline-offset-4 hover:underline; }
+
+  .pill-ok { @apply pill border-transparent bg-accent-soft text-accent; }
+  .pill-wait { @apply pill border-transparent bg-warn-soft text-warn; }
+  .pill-bad { @apply pill border-transparent bg-danger-soft text-danger; }
+
+  /* Modals: toggled with the .active class (see lib/ui.ts) */
+  .modal { @apply invisible fixed inset-0 z-50 grid place-items-center bg-ink/40 opacity-0 transition; }
+  .modal.active { @apply visible opacity-100; }
+  .modal > div { @apply flex w-[92%] max-w-md translate-y-2 flex-col gap-5 rounded-xl border border-line bg-surface p-7 shadow-xl transition; }
+  .modal.active > div { @apply translate-y-0; }
+
+  /* Month calendar grid (components/MonthCalendar.astro) */
+  .cal-day { @apply rounded-md py-2 text-sm text-muted/50 select-none; }
+  .cal-day.open { @apply cursor-pointer border border-line bg-surface font-semibold text-ink hover:border-accent hover:text-accent; }
+  .cal-day.picked { @apply border-accent bg-accent text-white hover:text-white; }
+}

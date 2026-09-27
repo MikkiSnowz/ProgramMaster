@@ -1,0 +1,28 @@
+---
+import MonthCalendar from '../MonthCalendar.astro';
+import StatCard from '../StatCard.astro';
+---
+<div class="flex flex-col gap-6">
+  <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+    <StatCard id="statEarnings" label="รายได้เดือนนี้" />
+    <StatCard id="statHours" label="ชั่วโมงสอนรวม" />
+    <StatCard id="statRating" label="คะแนนเฉลี่ย" />
+    <StatCard id="statCourses" label="คอร์สที่เปิดสอน" />
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-[1fr_24rem] lg:items-start">
+    <div class="card">
+      <div>
+        <h2>ตารางสอนที่ยืนยันแล้ว</h2>
+        <p class="muted mt-1 text-sm">คลิกวันที่มีคลาสเพื่อดูรายละเอียดนักเรียนและข้อความ</p>
+      </div>
+      <MonthCalendar id="tutorCalendar" />
+      <div id="sessionDetail" class="flex flex-col gap-3"></div>
+    </div>
+
+    <div class="card">
+      <h2>คำขอจองใหม่</h2>
+      <div id="requests" class="flex flex-col gap-3"><p class="muted">กำลังโหลด...</p></div>
+    </div>
+  </div>
+</div>

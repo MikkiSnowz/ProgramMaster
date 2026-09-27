@@ -1,0 +1,40 @@
+---
+import CoursesTab from '../../components/tutor/CoursesTab.astro';
+import OverviewTab from '../../components/tutor/OverviewTab.astro';
+import ScheduleTab from '../../components/tutor/ScheduleTab.astro';
+import Layout from '../../layouts/Layout.astro';
+
+const tabs = [['overview', 'ภาพรวมและคำขอ'], ['schedule', 'เวลาสอน'], ['courses', 'คอร์สเรียน'], ['profile', 'บัญชี']];
+---
+
+<Layout title="แดชบอร์ดติวเตอร์ | TutorMatch">
+  <main id="workspace" class="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-10 opacity-0 transition-opacity">
+    <header class="flex items-center gap-5">
+      <div id="avatar" class="grid size-16 shrink-0 place-items-center rounded-full border border-line bg-surface text-3xl"></div>
+      <div>
+        <p class="eyebrow">แดชบอร์ดติวเตอร์</p>
+        <h1 id="tutorName" class="text-3xl font-bold">กำลังโหลด...</h1>
+        <p id="tutorBio" class="muted"></p>
+      </div>
+    </header>
+
+    <nav role="tablist" class="-mb-4 flex gap-6 overflow-x-auto border-b border-line">
+      {tabs.map(([id, label]) => (
+        <button type="button" role="tab" data-tab={id} class="-mb-px border-b-2 border-transparent pb-3 text-sm font-semibold whitespace-nowrap text-muted transition hover:text-ink aria-selected:border-accent aria-selected:text-ink">{label}</button>
+      ))}
+    </nav>
+
+    <section id="overview" data-panel><OverviewTab /></section>
+    <section id="schedule" data-panel hidden><ScheduleTab /></section>
+    <section id="courses" data-panel hidden><CoursesTab /></section>
+    <section id="profile" data-panel hidden class="card max-w-xl">
+      <h2>ข้อมูลบัญชี</h2>
+      <form id="profileForm" class="flex flex-col gap-5">
+        <div class="field"><label for="profileName">ชื่อ-นามสกุล (ที่ใช้แสดงในการสอน)</label><input id="profileName" name="name" required /></div>
+        <button type="submit" class="btn-primary self-start">บันทึก</button>
+      </form>
+    </section>
+  </main>
+</Layout>
+
+<script src="../../scripts/tutor/index.ts"></script>

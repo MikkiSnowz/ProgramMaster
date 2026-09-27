@@ -1,0 +1,16 @@
+---
+// Markup for lib/calendar.ts `mountCalendar`.
+const { id } = Astro.props as { id: string };
+const nav = 'grid size-8 place-items-center rounded-md border border-line text-lg text-muted hover:text-ink disabled:opacity-30';
+---
+<div id={id} class="flex flex-col gap-3">
+  <div class="flex items-center justify-between">
+    <button type="button" data-nav class={nav} aria-label="เดือนก่อนหน้า">‹</button>
+    <h4 data-nav class="font-display text-lg font-semibold"></h4>
+    <button type="button" data-nav class={nav} aria-label="เดือนถัดไป">›</button>
+  </div>
+  <div class="grid grid-cols-7 gap-1.5 text-center text-xs font-medium text-muted">
+    {['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'].map((d) => <div>{d}</div>)}
+  </div>
+  <div data-grid class="grid grid-cols-7 gap-1.5 text-center"></div>
+</div>

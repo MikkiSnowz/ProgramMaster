@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { LEVELS } from '../lib/model';
+
+const times = ['09:00 - 11:00', '10:00 - 12:00', '13:00 - 15:00', '14:00 - 16:00', '16:00 - 18:00', '17:00 - 19:00', '18:00 - 20:00', '19:00 - 21:00'];
+const filters = {
+  budget: [['', 'ทุกช่วงราคา'], ['0-400', 'ไม่เกิน 400 ฿/ชม.'], ['0-600', 'ไม่เกิน 600 ฿/ชม.'], ['700-', '700 ฿/ชม. ขึ้นไป']],
+  level: [['', 'ทุกระดับชั้น'], ...LEVELS.map((l) => [l, l])],
+  mode: [['', 'ทุกรูปแบบ'], ['online', 'เรียนออนไลน์ได้'], ['onsite', 'เรียนเจอตัวได้']],
+  sort: [['', 'เรียงตามล่าสุด'], ['asc', 'ราคา ต่ำ → สูง'], ['desc', 'ราคา สูง → ต่ำ']],
+};
+---
+
+<Layout title="ค้นหาติวเตอร์ที่ใช่สำหรับคุณ | TutorMatch">
+  <main class="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-14">
+    <header class="max-w-3xl">
+      <p class="eyebrow mb-4">ติวตัวต่อตัว · ออนไลน์และเจอตัว</p>
+      <h1 class="text-4xl leading-tight font-bold md:text-5xl">หาติวเตอร์ที่เข้ากับเป้าหมาย ตารางเวลา และงบของคุณ</h1>
+      <p class="muted mt-5 text-lg leading-relaxed">เลือกวิชา ดูวันเวลาที่ติวเตอร์ว่างจริง แล้วส่งคำขอจองได้ทันที ติวเตอร์จะยืนยันคลาสผ่านแดชบอร์ดของตัวเอง</p>
+    </header>
+
+    <form id="filters" class="grid grid-cols-2 gap-2 rounded-xl border border-line bg-surface p-2 md:flex md:gap-0 md:divide-x md:divide-line md:*:flex-1">
+      <select name="subject" class="bare" aria-label="วิชา"><option value="">ทุกวิชา</option></select>
+      <select name="time" class="bare" aria-label="ช่วงเวลา">
+        <option value="">ทุกช่วงเวลา</option>
+        {times.map((t) => <option value={t}>{t}</option>)}
+      </select>
+      {Object.entries(filters).map(([name, opts]) => (
+        <select name={name} class="bare">{opts.map(([v, l]) => <option value={v}>{l}</option>)}</select>
+      ))}
+    </form>
+
+    <section>
+      <p id="resultCount" class="muted mb-4 text-sm"></p>
+      <div id="grid" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <p class="muted col-span-full">กำลังโหลดรายวิชา...</p>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script src="../scripts/market.ts"></script>

@@ -1,0 +1,27 @@
+---
+import StatCard from '../../components/StatCard.astro';
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="ประวัติการเรียนของฉัน | TutorMatch">
+  <main id="workspace" class="mx-auto flex max-w-5xl flex-col gap-8 px-6 py-12 opacity-0 transition-opacity">
+    <header>
+      <p class="eyebrow mb-3">บัญชีผู้เรียน</p>
+      <h1 id="greeting" class="text-3xl font-bold">…</h1>
+      <p id="level" class="muted mt-1"></p>
+    </header>
+
+    <section class="grid gap-4 sm:grid-cols-3">
+      <StatCard id="statCourses" label="คอร์สที่สมัครเรียน" />
+      <StatCard id="statHours" label="ชั่วโมงเรียนที่ยืนยันแล้ว" />
+      <StatCard id="statPending" label="คำขอที่รอติวเตอร์ตอบ" />
+    </section>
+
+    <section class="card">
+      <h2>ประวัติการจองและสถานะ</h2>
+      <div id="history" class="flex flex-col gap-3"><p class="muted">กำลังโหลด...</p></div>
+    </section>
+  </main>
+</Layout>
+
+<script src="../../scripts/student.ts"></script>

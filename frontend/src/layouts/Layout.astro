@@ -1,0 +1,60 @@
+---
+import '../styles/global.css';
+
+const { title } = Astro.props as { title: string };
+const link = 'text-sm font-medium text-muted hover:text-ink';
+---
+
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@500;600;700&display=swap" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <nav class="sticky top-0 z-40 border-b border-line bg-paper/95">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-6 py-3">
+        <a href="/" class="font-display text-xl font-bold tracking-tight">TutorMatch<span class="text-accent">.</span></a>
+        <div class="flex flex-wrap items-center gap-5">
+          <a href="/" class={link}>ค้นหาติวเตอร์</a>
+          <a href="/about" class={link}>เกี่ยวกับเรา</a>
+          <a href="/student/dashboard" id="navStudentDash" hidden class={link}>ประวัติการเรียน</a>
+          <a href="/tutor/dashboard" id="navTutorDash" hidden class={link}>แดชบอร์ดติวเตอร์</a>
+          <a href="/register" class="btn-primary py-2">สมัครเป็นติวเตอร์</a>
+          <div class="flex items-center gap-1 rounded-md border border-line bg-surface pl-1">
+            <select id="roleSelect" class="bare" aria-label="สลับผู้ใช้งาน (โหมดทดลอง)"></select>
+            <button type="button" id="resetDb" class="border-l border-line px-3 py-2 text-xs font-medium text-muted hover:text-danger" title="ล้างข้อมูลฐานข้อมูลกลับเป็นค่าเริ่มต้น">รีเซ็ตข้อมูล</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <slot />
+
+    <footer class="mx-auto max-w-6xl border-t border-line px-6 py-8 text-sm text-muted">TutorMatch · แพลตฟอร์มจับคู่ติวเตอร์ตัวต่อตัว (โหมดทดลอง)</footer>
+
+    <div class="modal" id="alertModal">
+      <div>
+        <h3 class="text-lg font-semibold"></h3>
+        <p class="muted whitespace-pre-line"></p>
+        <button type="button" class="btn-primary self-end" data-answer="ok">ตกลง</button>
+      </div>
+    </div>
+    <div class="modal" id="confirmModal">
+      <div>
+        <h3 class="text-lg font-semibold"></h3>
+        <p class="muted"></p>
+        <div class="flex justify-end gap-3">
+          <button type="button" class="btn-muted" data-answer="no">ยกเลิก</button>
+          <button type="button" class="btn-danger" data-answer="yes">ยืนยัน</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../scripts/nav.ts"></script>
+  </body>
+</html>

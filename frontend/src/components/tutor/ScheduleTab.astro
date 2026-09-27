@@ -1,0 +1,49 @@
+---
+import { DAY_END, DAY_START, DAYS } from '../../lib/model';
+
+const span = DAY_END - DAY_START;
+const hours = Array.from({ length: span + 1 }, (_, i) => DAY_START + i);
+const at = (h: number) => `left:${((h - DAY_START) / span) * 100}%`;
+---
+<div class="card">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <h2>เวลาที่เปิดรับสอน</h2>
+      <p class="muted mt-1 text-sm">เปิดวันที่สอน แล้วคลิกบนแถบเวลาเพื่อเพิ่มช่วง หรือปรับเวลาเป็นรายนาทีด้านล่าง</p>
+    </div>
+    <span id="activeDays" class="text-sm font-semibold">--</span>
+  </div>
+
+  <div id="weekGrid" class="flex flex-col divide-y divide-line border-y border-line">
+    {DAYS.map(([day, name]) => (
+      <div data-day={day} class="flex flex-col gap-3 py-5 transition">
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <label class="flex min-w-36 cursor-pointer items-center gap-3">
+            <input type="checkbox" class="toggle peer sr-only" />
+            <span class="relative h-5 w-9 rounded-full bg-line transition peer-checked:bg-accent after:absolute after:top-0.5 after:left-0.5 after:size-4 after:rounded-full after:bg-white after:shadow after:transition peer-checked:after:translate-x-4"></span>
+            <span class="font-semibold text-ink">{name}</span>
+          </label>
+          <span class="total text-sm text-muted"></span>
+          <span class="warn text-sm font-medium text-danger"></span>
+          <button type="button" class="add btn-muted ml-auto py-1.5 text-xs">+ เพิ่มช่วงเวลา</button>
+        </div>
+
+        <div>
+          <div class="timeline relative h-9 overflow-hidden rounded-md border border-line bg-paper" title="คลิกช่องว่างเพื่อเพิ่มช่วงเวลา 2 ชั่วโมง">
+            {hours.map((h) => <span class:list={['absolute inset-y-0 w-px', h % 3 ? 'bg-line/50' : 'bg-line']} style={at(h)}></span>)}
+            <div class="blocks absolute inset-0"></div>
+          </div>
+          <div class="relative mt-1 h-4 text-[0.7rem] text-muted">
+            {hours.filter((h) => h % 3 === 0).map((h) => (
+              <span class="absolute -translate-x-1/2 first:translate-x-0 last:-translate-x-full" style={at(h)}>{String(h).padStart(2, '0')}:00</span>
+            ))}
+          </div>
+        </div>
+
+        <div class="ranges flex flex-wrap gap-2"></div>
+      </div>
+    ))}
+  </div>
+
+  <button type="button" id="saveSchedule" class="btn-primary self-end">บันทึกเวลาสอน</button>
+</div>
